@@ -1,17 +1,20 @@
 // src/components/TableBody.js
 import React from 'react';
 
-const TableBody = ({ tableConfig }) => {
+const TableBody = ({ tableConfig, data, currentPage, itemsPerPage }) => {
+  // Calculate the data to display on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentData = data.slice(startIndex, startIndex + itemsPerPage);
+
+
+  
   return (
     <tbody>
-      {/* Generate a row with as many <td> elements as in col2 */}
-      <tr>
-        {tableConfig.HEADER_SUB.map((col, index) => (
-          <td key={index}>{` Data ${index + 1}`}</td>
-        ))}
-      </tr>
-      <tr><td>{tableConfig.API}</td></tr>  
-
+      {currentData.map((row, rowIndex) => (
+        <div>
+          {row.title} :::: {tableConfig.API}
+        </div>
+      ))}
     </tbody>
   );
 };

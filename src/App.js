@@ -7,7 +7,7 @@ import store from './redux/store'
 const App = () => (
   <Provider store={store}>
     {/* Pass 'default' or 'alternative' as type to change the table structure */}
-    <TableMain menuCode="tableA"  />
+    <TableMain menuCode="tableC"  />
   </Provider>
 );
 
