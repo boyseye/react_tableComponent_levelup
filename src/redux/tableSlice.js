@@ -8,12 +8,12 @@ export const tableSlice = createSlice({
   reducers: {
     setType: (state, action) => {
       const newState = getInitialState(action.payload);  // Fetch new initial state based on type
-      state.col1 = newState.col1;
-      state.col2 = newState.col2;
+      state.HEADER_MAIN = newState.HEADER_MAIN;
+      state.HEADER_SUB = newState.HEADER_SUB;
       state.headers = "";
     },
   },
 });
 
-export const { renderHeaders, setType } = tableSlice.actions;
+export const { setType } = tableSlice.actions;
 export default tableSlice.reducer;
