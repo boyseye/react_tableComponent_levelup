@@ -81,21 +81,18 @@ export const TableC = {
 // Define table configurations for different table types
 export const TableConfigurations = {
   tableA: {
-    col1: Object.values(TableA.COLUMN_1),
-    col2: Object.values(TableA.COLUMN_2),
-    colConfig: TableA.COLUMN_STYLE,
-    api : TableA.API
+    HEADER_MAIN: TableA.COLUMN_STYLE,
+    HEADER_SUB: Object.values(TableA.COLUMN_2),
+    API : TableA.API
   },
   tableB: {
-    col1: Object.values(TableB.COLUMN_1),
-    col2: Object.values(TableB.COLUMN_2),
-    colConfig:TableB.COLUMN_STYLE,
-    api : TableB.API
+    HEADER_MAIN:TableB.COLUMN_STYLE,
+    HEADER_SUB: Object.values(TableB.COLUMN_2),
+    API : TableB.API
   },
   tableC: {
-    col1: Object.values(TableC.COLUMN_1),
-    col2: Object.values(TableC.COLUMN_2),
-    colConfig:TableC.COLUMN_STYLE,
-    api : TableC.API
+    HEADER_MAIN:TableC.COLUMN_STYLE,
+    HEADER_SUB: Object.values(TableC.COLUMN_2),
+    API : TableC.API
   },
 };

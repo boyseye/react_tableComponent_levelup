@@ -1,7 +1,7 @@
 // src/components/TableComponent.js
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setType, renderHeaders } from '../redux/tableSlice';
+import { setType } from '../redux/tableSlice';
 import TableHeader from './TableHeader';
 import { TableConfigurations } from '../redux/tableColumn'; // Import table configurations
 import "./TableComponent.css"
@@ -13,7 +13,7 @@ const TableComponent = ({ menuCode }) => {
 
   useEffect(() => {
     dispatch(setType(menuCode)); // Update type in Redux if needed
-    dispatch(renderHeaders());
+    // dispatch(renderHeaders());
   }, [menuCode, dispatch]);
 
   return (

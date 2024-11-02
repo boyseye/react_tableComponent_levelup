@@ -2,12 +2,12 @@
 import React from 'react';
 
 const TableHeader = ({ tableConfig }) => {
-  const { col1, col2, colConfig } = tableConfig;
+  const { HEADER_SUB, HEADER_MAIN } = tableConfig;
 
   return (
     <thead>
       <tr>
-        {colConfig.map((header, index) => (
+        {HEADER_MAIN.map((header, index) => (
           <th
             key={index}
             rowSpan={header.rowspan}
@@ -18,11 +18,11 @@ const TableHeader = ({ tableConfig }) => {
         ))}
       </tr>
 
-      {/* Conditionally render col2 if it exists */}
-      {col2 && col2.length > 0 && (
+      {/* Conditionally render HEADER_SUB if it exists */}
+      {HEADER_SUB && HEADER_SUB.length > 0 && (
         <>
           <tr>
-            {col2.map((header, index) => (
+            {HEADER_SUB.map((header, index) => (
               <th key={index}>{header}</th>
             ))}
           </tr>
