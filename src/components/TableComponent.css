@@ -19,3 +19,37 @@ th {
 tr:nth-child(even) {
   background-color: #f9f9f9; /* Alternating row colors for readability */
 }
+
+
+
+/* src/components/tableComponent.css */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  margin: 0 4px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  border: none; /* Remove border */
+  border-radius: 4px; /* Optional: Add slight rounding for a cleaner look */
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #e0e0e0; /* Optional: Hover effect */
+}

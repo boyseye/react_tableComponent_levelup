@@ -1,21 +1,26 @@
 // src/components/TableBody.js
 import React from 'react';
+import { useTableConfig } from '../contexts/TableConfigContext';
 
-const TableBody = ({ tableConfig, data, currentPage, itemsPerPage }) => {
-  // Calculate the data to display on the current page
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentData = data.slice(startIndex, startIndex + itemsPerPage);
+const TableBody = ({data}) => {
+  const { HEADER_ROW_2, api } = useTableConfig();
 
-
-  
   return (
     <tbody>
-      {currentData.map((row, rowIndex) => (
-        <div>
-          {row.title} :::: {tableConfig.API}
-        </div>
-      ))}
-    </tbody>
+    {data.map((item, rowIndex) => (
+      <tr key={rowIndex}>
+        {HEADER_ROW_2 ? (
+          HEADER_ROW_2.map((col, colIndex) => (
+            <td key={colIndex}>
+             {item.title} :::  {item[col] || `${api} Data ${colIndex + 1}`}
+            </td>
+          ))
+        ) : (
+          <td colSpan="3">No additional data available</td>
+        )}
+      </tr>
+    ))}
+  </tbody>
   );
 };
 

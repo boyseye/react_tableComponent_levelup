@@ -1,62 +1,50 @@
 // src/components/TableComponent.js
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setType } from '../redux/tableSlice';
+import React, { useState,useEffect } from 'react';
 import TableHeader from './TableHeader';
-import { TableConfigurations } from '../redux/tableColumn'; // Import table configurations
-import "./TableComponent.css"
 import TableBody from './TableBody';
-import Paging from './Paging';
+import { TableConfigProvider } from '../contexts/TableConfigContext';
+import { getTableConfig } from '../redux/tableColumn';
+import usePagination from '../hooks/usePagination.js';
+import { fetchDataByMenuCode } from '../api';
+import './TableComponent.css'; // Import the CSS file
+import Pagination from './Pagination.js';
 
-const TableComponent = ({ menuCode }) => {
-  const dispatch = useDispatch();
-  const tableConfig = TableConfigurations[menuCode]; // Get the configuration based on menuCode
-  const itemsPerPage = 10; // Number of items per page
-  const [data, setData] = useState([]); // State to hold fetched data
-  const [currentPage, setCurrentPage] = useState(1); // State for current page\
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+const ITEMS_PER_PAGE = 5;
 
+const TableMain = ({ menuCode }) => {
 
+  const [data, setData] = useState([]);
+  const tableConfig = getTableConfig(menuCode);
+
+  // Fetch data when menuCode changes
   useEffect(() => {
-
     const fetchData = async () => {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/todos/'); // Replace with actual API URL
-        const result = await response.json();
-        setData(result); // Set data with the fetched result
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      const fetchedData = await fetchDataByMenuCode(menuCode);
+      setData(fetchedData);
     };
 
     fetchData();
+  }, [menuCode]);
 
-    dispatch(setType(menuCode)); // Update type in Redux if needed
-    // dispatch(renderHeaders());
-  }, [menuCode, dispatch]);
+  // Use pagination on the fetched data
+  const { currentPage, totalPages, paginatedData, setCurrentPage } = usePagination(data, ITEMS_PER_PAGE);
 
-  const goToPage = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   return (
-    <div>
+    <TableConfigProvider menuCode={menuCode}>
+     
       <table>
-        <TableHeader tableConfig={tableConfig} /> 
-        <TableBody
-          tableConfig={tableConfig}
-          data={data}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-         /> 
-        <Paging
+        <TableHeader />
+        <TableBody data={paginatedData} />
+      </table>
+     
+      <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={goToPage}
-        />
-      </table>
-    </div>
+        onPageChange={setCurrentPage}
+      />
+    </TableConfigProvider>
   );
 };
 
-export default TableComponent;
+export default TableMain;
