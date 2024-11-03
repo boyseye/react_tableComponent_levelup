@@ -8,6 +8,7 @@ import usePagination from '../hooks/usePagination.js';
 import { fetchDataByMenuCode } from '../api';
 import './TableComponent.css'; // Import the CSS file
 import Pagination from './Pagination.js';
+import Calendar from './Calendar.js';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -33,16 +34,18 @@ const TableMain = ({ menuCode }) => {
   return (
     <TableConfigProvider menuCode={menuCode}>
      
-      <table>
-        <TableHeader />
-        <TableBody data={paginatedData} />
-      </table>
+      <Calendar></Calendar>
+      <div className="table-container">
+      <TableHeader />
+      <TableBody data={paginatedData} />
+      
      
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
+     </div>
     </TableConfigProvider>
   );
 };
