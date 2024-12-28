@@ -1,58 +1,374 @@
-// src/components/TableComponent.js
-import React, { useState,useEffect } from 'react';
-import html2canvas from "html2canvas";
+import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import * as echarts from "echarts";
+import "./App.css";
 
+// Simulating a long-running asynchronous function
+const simulateLongTask = (name, delay) => {
+  return new Promise((resolve) => {
+    console.log(`${name} started...`);
+    setTimeout(() => {
+      console.log(`${name} completed.`);
+      resolve(`${name} data ready`);
+    }, delay);
+  });
+};
 
+// ComponentB: Table with 10 Rows and 9 Columns
+const ComponentB = ({ id }) => {
+  const [status, setStatus] = useState("Idle");
+  const [data, setData] = useState(null);
 
-const TableMain = () => {
-
-  const generatePdf = async () => {
-    const element = document.getElementById("content");
-    const canvas = await html2canvas(element);
-     //2.이미지화
-     const imageFile = canvas.toDataURL('image/png');
-     //3.pdf준비
-     const doc = new jsPDF('p', 'mm', 'a4');
-     //pdf 가로 세로 사이즈
-     const pageWidth = doc.internal.pageSize.getWidth();
-     const pageHeight = doc.internal.pageSize.getHeight();
- 
-     //이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
-     const widthRatio = pageWidth / canvas.width;
-     //비율에 따른 이미지 높이
-     const customHeight = canvas.height * widthRatio;
-     //pdf에 1장에 대한 이미지 추가
-     doc.addImage(imageFile, 'png', 0, 0, pageWidth, customHeight);
-     //doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
-     //감소하면서 남은 길이 변수
-     let heightLeft = customHeight;
-     //증가하면서 이미지 자를 위치 변수
-     let heightAdd = -pageHeight;
- 
-     // 한 페이지 이상일 경우
-     while (heightLeft >= pageHeight) {
-         //pdf페이지 추가
-         doc.addPage();
-         //남은 이미지를 추가
-         doc.addImage(imageFile, 'png', 0, heightAdd, pageWidth, customHeight);
-         //남은길이
-         heightLeft -= pageHeight;
-         //남은높이
-         heightAdd -= pageHeight;
-     }
-     //문서저장
-     doc.save('filename' + new Date().getTime() + '.pdf');
-  };
-
+  useEffect(() => {
+    const fetchData = async () => {
+      setStatus("Loading...");
+      const result = await simulateLongTask(`Task ${id.toUpperCase()}`, 2000);
+      setData(result);
+      setStatus("Completed");
+    };
+    fetchData();
+  }, [id]);
 
   return (
-    <div>
+    <div id={id} className="child-component">
+      <h2>Component {id.toUpperCase()} (Small Table)</h2>
+      <p>Status: {status}</p>
+      {data ? (
+        <table>
+          <thead>
+            <tr>
+              {Array.from({ length: 9 }, (_, i) => (
+                <th key={i}>Column {i + 1}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: 10 }, (_, rowIndex) => (
+              <tr key={rowIndex}>
+                {Array.from({ length: 9 }, (_, colIndex) => (
+                  <td key={colIndex}>{`Row ${rowIndex + 1}, Col ${
+                    colIndex + 1
+                  }`}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>Loading table...</p>
+      )}
+    </div>
+  );
+};
+
+// ComponentG: Table with 30 Rows and 10 Columns
+const ComponentG = ({ id }) => {
+  const [status, setStatus] = useState("Idle");
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setStatus("Loading...");
+      const result = await simulateLongTask(`Task ${id.toUpperCase()}`, 2500);
+      setData(result);
+      setStatus("Completed");
+    };
+    fetchData();
+  }, [id]);
+
+  return (
+    <div id={id} className="child-component">
+      <h2>Component {id.toUpperCase()} (Large Table)</h2>
+      <p>Status: {status}</p>
+      {data ? (
+        <table>
+          <thead>
+            <tr>
+              {Array.from({ length: 10 }, (_, i) => (
+                <th key={i}>Column {i + 1}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: 30 }, (_, rowIndex) => (
+              <tr key={rowIndex}>
+                {Array.from({ length: 10 }, (_, colIndex) => (
+                  <td key={colIndex}>{`Row ${rowIndex + 1}, Col ${
+                    colIndex + 1
+                  }`}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>Loading large table...</p>
+      )}
+    </div>
+  );
+};
+
+// ComponentK: Table with 20 Rows and 10 Columns
+const ComponentK = ({ id }) => {
+  const [status, setStatus] = useState("Idle");
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setStatus("Loading...");
+      const result = await simulateLongTask(`Task ${id.toUpperCase()}`, 2500);
+      setData(result);
+      setStatus("Completed");
+    };
+    fetchData();
+  }, [id]);
+
+  return (
+    <div id={id} className="child-component">
+      <h2>Component {id.toUpperCase()} (Medium Table)</h2>
+      <p>Status: {status}</p>
+      {data ? (
+        <table>
+          <thead>
+            <tr>
+              {Array.from({ length: 10 }, (_, i) => (
+                <th key={i}>Column {i + 1}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: 20 }, (_, rowIndex) => (
+              <tr key={rowIndex}>
+                {Array.from({ length: 10 }, (_, colIndex) => (
+                  <td key={colIndex}>{`Row ${rowIndex + 1}, Col ${
+                    colIndex + 1
+                  }`}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>Loading medium table...</p>
+      )}
+    </div>
+  );
+};
+
+// ComponentE and ComponentX: Bar Chart with ECharts
+const BarChartComponent = ({ id }) => {
+  const [status, setStatus] = useState("Idle");
+  const [chartLoaded, setChartLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setStatus("Loading...");
+      await simulateLongTask(`Task ${id.toUpperCase()}`, 3000);
+      setStatus("Completed");
+      setChartLoaded(true);
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    if (chartLoaded) {
+      const chartDom = document.getElementById(id);
+      const myChart = echarts.init(chartDom);
+
+      const option = {
+        title: { text: `Bar Chart for ${id.toUpperCase()}`, left: "center" },
+        tooltip: {},
+        xAxis: {
+          type: "category",
+          data: ["A", "B", "C", "D", "E", "F", "G"],
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            data: [120, 200, 150, 80, 70, 110, 130],
+            type: "bar",
+          },
+        ],
+      };
+
+      myChart.setOption(option);
+    }
+  }, [chartLoaded, id]);
+
+  return (
+    <div id={id} className="child-component" style={{ height: "400px" }}>
+      <h2>Component {id.toUpperCase()} (Bar Chart)</h2>
+      <p>Status: {status}</p>
+      {!chartLoaded && <p>Loading bar chart...</p>}
+    </div>
+  );
+};
+
+// ComponentM and ComponentO: Round (Pie) Chart with ECharts
+const PieChartComponent = ({ id }) => {
+  const [status, setStatus] = useState("Idle");
+  const [chartLoaded, setChartLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setStatus("Loading...");
+      await simulateLongTask(`Task ${id.toUpperCase()}`, 3000);
+      setStatus("Completed");
+      setChartLoaded(true);
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    if (chartLoaded) {
+      const chartDom = document.getElementById(id);
+      const myChart = echarts.init(chartDom);
+
+      const option = {
+        title: { text: `Pie Chart for ${id.toUpperCase()}`, left: "center" },
+        tooltip: { trigger: "item" },
+        legend: { orient: "vertical", left: "left" },
+        series: [
+          {
+            name: "Data",
+            type: "pie",
+            radius: "50%",
+            data: [
+              { value: 1048, name: "A" },
+              { value: 735, name: "B" },
+              { value: 580, name: "C" },
+              { value: 484, name: "D" },
+              { value: 300, name: "E" },
+            ],
+          },
+        ],
+      };
+
+      myChart.setOption(option);
+    }
+  }, [chartLoaded, id]);
+
+  return (
+    <div id={id} className="child-component" style={{ height: "400px" }}>
+      <h2>Component {id.toUpperCase()} (Pie Chart)</h2>
+      <p>Status: {status}</p>
+      {!chartLoaded && <p>Loading pie chart...</p>}
+    </div>
+  );
+};
+
+// Placeholder Component for Other Components
+const PlaceholderComponent = ({ id }) => {
+  const [status, setStatus] = useState("Idle");
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setStatus("Loading...");
+      const result = await simulateLongTask(`Task ${id.toUpperCase()}`, 1500);
+      setData(result);
+      setStatus("Completed");
+    };
+    fetchData();
+  }, [id]);
+
+  return (
+    <div id={id} className="child-component">
+      <h2>Component {id.toUpperCase()} (Placeholder)</h2>
+      <p>Status: {status}</p>
+      {data ? <p>Content for {id.toUpperCase()}: {data}</p> : <p>Loading...</p>}
+    </div>
+  );
+};
+
+// Main Component: TableMain
+const TableMain = () => {
+  const [loading, setLoading] = useState(false);
+
+  // Generate IDs dynamically (B-Z)
+  const ids = Array.from({ length: 26 }, (_, i) =>
+    String.fromCharCode("b".charCodeAt(0) + i)
+  );
+
+  // PDF Generation
+  const createPDF = async () => {
+    setLoading(true);
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth() - 20; // 10px padding on both sides
+    const pdfHeight = pdf.internal.pageSize.getHeight() - 20; // 10px padding on both sides
+    const padding = 10;
+
+    let position = padding;
+
+    const captureComponent = async (id) => {
+      const element = document.getElementById(id);
+      if (element) {
+        const canvas = await html2canvas(element, { scale: 2 });
+        const imgData = canvas.toDataURL("image/png");
+        const canvasHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        return { imgData, canvasHeight };
+      }
+      return null;
+    };
+
+    const allComponents = await Promise.all(
+      ids.map((id) => captureComponent(id))
+    );
+
+    allComponents.forEach((component) => {
+      if (component) {
+        if (position + component.canvasHeight > pdfHeight + padding) {
+          pdf.addPage();
+          position = padding; // Reset position for new page
+        }
+
+        pdf.addImage(
+          component.imgData,
+          "PNG",
+          padding,
+          position,
+          pdfWidth,
+          component.canvasHeight
+        );
+        position += component.canvasHeight + 10; // Add padding between components
+      }
+    });
+
+    pdf.save("table-main.pdf");
+    setLoading(false);
+  };
+
+  return (
+    <div className="container">
+      <button onClick={createPDF} className="pdf-button" disabled={loading}>
+        PDF Creation
+      </button>
+      {loading && (
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+        </div>
+      )}
       <div id="content">
-        <h1>PDF로 변환할 내용</h1>
-        <p>이 내용이 PDF에 포함됩니다.</p>
+        {ids.map((id) =>
+          id === "b" ? (
+            <ComponentB key={id} id={id} />
+          ) : id === "g" ? (
+            <ComponentG key={id} id={id} />
+          ) : id === "e" || id === "x" ? (
+            <BarChartComponent key={id} id={id} />
+          ) : id === "k" ? (
+            <ComponentK key={id} id={id} />
+          ) : id === "m" || id === "o" ? (
+            <PieChartComponent key={id} id={id} />
+          ) : (
+            <PlaceholderComponent key={id} id={id} />
+          )
+        )}
       </div>
-      <button onClick={generatePdf}>PDF로 저장</button>
     </div>
   );
 };
